@@ -1,0 +1,13 @@
+- name: Create prometheus directory
+  file:
+    path: /etc/prometheus
+    state: directory
+    owner: "root"
+    group: "root"
+
+- name: Create prometheus storage directory
+  file:
+    path: /var/lib/prometheus
+    state: directory
+    owner: "{{ prometheus_user }}"
+    group: "{{ prometheus_group }}"

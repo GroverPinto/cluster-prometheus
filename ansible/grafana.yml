@@ -1,0 +1,11 @@
+---
+- hosts: grafana
+  become: yes
+  become_user: root
+  roles:
+    - common
+- hosts: grafana
+  become: yes
+  become_user: root
+  roles:
+    - grafana

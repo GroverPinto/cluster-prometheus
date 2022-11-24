@@ -1,0 +1,10 @@
+- name: Systemd restart
+  command: systemctl daemon-reload
+  listen: systemdReload
+
+- name: Prometheus service restart
+  service:
+    name: prometheus
+    state: restarted
+    enabled: yes
+  listen: restartService

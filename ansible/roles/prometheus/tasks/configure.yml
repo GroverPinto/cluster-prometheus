@@ -1,0 +1,15 @@
+- name: Create service config file
+  template:
+    src: service.j2
+    dest: /etc/systemd/system/prometheus.service
+    owner: root
+    group: root
+  notify: systemdReload
+
+- name: Create configuration file
+  template:
+    src: config.yml.j2
+    dest: /etc/prometheus/prometheus.yml
+    owner: root
+    group: root
+  notify: restartService

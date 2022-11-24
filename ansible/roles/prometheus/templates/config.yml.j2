@@ -1,0 +1,31 @@
+# Global configuration
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+
+# Cluster labels configuration  
+  external_labels:
+    cluster: monitoring-cluster
+    replica: replica-{{play_hosts.index(inventory_hostname)}}
+
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            {# - alertmanager:9093 #}
+
+# Load rules
+rule_files:
+  # - "first.rules"
+  # - "second.rules"
+
+# Scrape configuration
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets:
+        - 'replica-0:9090'
+        - 'replica-1:9090'
+        - 'replica-2:9090'

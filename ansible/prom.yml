@@ -1,0 +1,11 @@
+---
+# - hosts: prometheus
+#   become: yes
+#   become_user: root
+#   roles:
+#     - common
+- hosts: prometheus
+  become: yes
+  become_user: root
+  roles:
+    - prometheus

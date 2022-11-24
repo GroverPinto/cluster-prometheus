@@ -1,0 +1,7 @@
+[prometheus]
+10.0.30.10      ansible_ssh_user=ansible
+10.0.30.11      ansible_ssh_user=ansible
+10.0.30.12      ansible_ssh_user=ansible
+
+[grafana]
+10.0.30.13      ansible_ssh_user=ansible

@@ -1,0 +1,37 @@
+- name: Download binary
+  get_url: 
+    url: "https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
+    dest: "/tmp/prometheus_{{ prometheus_version }}_amd64.tar.gz"
+    owner: "{{ prometheus_user }}"
+    group: "{{ prometheus_group }}"
+  register: prometheus_download
+
+- name: Decompress binary
+  unarchive:
+    src: "/tmp/prometheus_{{ prometheus_version }}_amd64.tar.gz"
+    dest: /tmp
+    copy: no
+    owner: "{{ prometheus_user }}"
+    group: "{{ prometheus_group }}"
+    mode: 0755
+
+- name: Move prometheus binary
+  command: mv /tmp/prometheus-{{ prometheus_version }}.linux-amd64/prometheus /usr/local/bin
+
+- name: Verify consoles stat
+  stat:
+    path: /etc/prometheus/consoles
+  register: consoles_stat
+
+- name: Move prometheus consoles
+  command: mv /tmp/prometheus-{{ prometheus_version }}.linux-amd64/consoles /etc/prometheus
+  when: consoles_stat.stat.exists == False
+
+- name: Verify consoles_libraries stat
+  stat:
+    path: /etc/prometheus/console_libraries
+  register: console_libraries_stat
+
+- name: Move prometheus consoles libraries
+  command: mv /tmp/prometheus-{{ prometheus_version }}.linux-amd64/console_libraries /etc/prometheus
+  when: console_libraries_stat.stat.exists == False

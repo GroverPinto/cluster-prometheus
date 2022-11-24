@@ -1,0 +1,32 @@
+- name: Create group
+  group:
+    name: "{{ prometheus_group }}"
+
+- name: Create user
+  user:
+    name: "{{ prometheus_user }}"
+    group: "{{ prometheus_group }}"
+    system: yes
+    shell: "/sbin/nologin"
+    comment: "Prometheus user without login access"
+    createhome: no
+    state: present
+  
+- name: Pre-requirements install
+  package:
+    name: "{{ item }}"
+    update_cache: yes
+    state: present
+  with_items: "{{ prometheus_prerequisites }}"
+
+- name: Create needed directories
+  include_tasks:
+    file: directories.yml
+
+- name: Download and install Prometheus
+  include_tasks:
+    file: install.yml
+
+- name: Configuring prometheus service
+  include_tasks:
+    file: configure.yml
