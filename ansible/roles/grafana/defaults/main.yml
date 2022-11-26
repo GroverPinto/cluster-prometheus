@@ -1,0 +1,5 @@
+---
+grafana_user: "grafana"
+grafana_group: "grafana"
+grafana_prerequisites: ["gnupg2", "curl", "software-properties-common"]
+grafana_version: "9.2.6"

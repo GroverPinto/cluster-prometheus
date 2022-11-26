@@ -1,0 +1,5 @@
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+  notify: Start and Enable Nginx

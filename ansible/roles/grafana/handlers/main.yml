@@ -1,0 +1,15 @@
+- name: Start grafana
+  systemd:
+    name: grafana-server
+    state: started
+
+- name: Enable grafana
+  systemd:
+    name: grafana-server
+    enabled: yes
+
+- name: Start and Enable Nginx
+  systemd:
+    name: nginx
+    state: started
+    enabled: yes

@@ -1,0 +1,6 @@
+- name: Create grafana directory
+  file:
+    path: /etc/grafana
+    state: directory
+    owner: "root"
+    group: "root"

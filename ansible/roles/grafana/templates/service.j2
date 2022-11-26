@@ -1,0 +1,27 @@
+[Unit]
+Description=Grafana service
+Documentation=https://grafana.com/docs/?pg=oss-graf&plcmt=quick-links
+Wants=network-online.target
+After=network-online.target
+ConditionFileNotEmpty=/etc/grafana/grafana.ini
+
+[Service]
+Type=simple
+User=grafana
+Group=grafana
+ExecReload=/usr/local/bin/kill --signal HUP $MAINPID
+ExecStart=/usr/local/bin/grafana-server --config /etc/grafana/grafana.ini
+SyslogIdentifier=grafana
+
+# Give the CAP_NET_BIND_SERVICE capability
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+
+# A private user cannot have process capabilities on the host's user
+# namespace and thus CAP_NET_BIND_SERVICE has no effect.
+PrivateUsers=false
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

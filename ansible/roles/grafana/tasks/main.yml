@@ -1,0 +1,47 @@
+- name: Create group
+  group:
+    name: "{{ grafana_group }}"
+
+- name: Create user
+  user:
+    name: "{{ grafana_user }}"
+    group: "{{ grafana_group }}"
+    system: yes
+    shell: "/sbin/nologin"
+    comment: "Grafana user without login access"
+    createhome: no
+    state: present
+
+- name: Update apt repo and cache on all Ubuntu box
+  apt:
+    update_cache: yes
+    force_apt_get: yes
+    cache_valid_time: 3600
+
+- name: Upgrade all packages on servers
+  apt:
+    upgrade: dist
+    force_apt_get: yes
+
+- name: Pre-requirements install
+  package:
+    name: "{{ item }}"
+    update_cache: yes
+    state: present
+  with_items: "{{ grafana_prerequisites }}"
+
+- name: Create needed directories
+  include_tasks:
+    file: directories.yml
+
+- name: Download and install Grafana
+  include_tasks:
+    file: install.yml
+
+- name: Download and install Nginx
+  include_tasks:
+    file: install_nginx.yml
+
+- name: Configuring grafana service
+  include_tasks:
+    file: configure.yml
